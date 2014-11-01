@@ -4,6 +4,9 @@ class validate extends PHPUnit_Framework_TestCase
 {
     protected $xsdVersion;
 
+    protected static $count = 0;
+    protected static $errors = 0;
+
     protected function setUp()
     {
         //from bootstrap file
@@ -16,6 +19,17 @@ class validate extends PHPUnit_Framework_TestCase
         }
         $this->xml = new DOMDocument();
         libxml_use_internal_errors(true);
+    }
+
+    public static function setUpBeforeClass()
+    {
+        self::$count = 0;
+        self::$errors = 0;
+    }
+
+    public static function tearDownAfterClass()
+    {
+        printf("Analysed " . self::$count . " Joomla manifest(s), found ".self::$errors . " error(s).");
     }
 
     public function testValidate_forComponentManifests_expectValidTrue()
@@ -158,6 +172,9 @@ class validate extends PHPUnit_Framework_TestCase
     private function libxml_display_errors()
     {
         $errors = libxml_get_errors();
+
+        self::$errors = self::$errors + sizeof($errors);
+
         foreach ($errors as $error) {
             print  $this->libxml_display_error($error);
         }
@@ -201,6 +218,8 @@ class validate extends PHPUnit_Framework_TestCase
                 $manifests[] = $key;
             }
         }
+
+        self::$count = self::$count + sizeof($manifests);
 
         return $manifests;
     }
