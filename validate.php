@@ -21,7 +21,7 @@ class validate extends PHPUnit_Framework_TestCase
     public function testValidate_forComponentManifests_expectValidTrue()
     {
         // Arrange
-        $manifests = $this->getManifests("components", "component");
+        $manifests = $this->getManifests("components", 'type="component"');
         $schema = dirname(__FILE__) . "/" . $this->xsdVersion . "/component.xsd";
 
         // Act
@@ -40,7 +40,7 @@ class validate extends PHPUnit_Framework_TestCase
     public function testValidate_forModuleManifests_expectValidTrue()
     {
         // Arrange
-        $manifests = $this->getManifests("modules", "module");
+        $manifests = $this->getManifests("modules", 'type="module"');
         $schema = dirname(__FILE__) . "/" . $this->xsdVersion . "/module.xsd";
 
         // Act
@@ -59,7 +59,7 @@ class validate extends PHPUnit_Framework_TestCase
     public function testValidate_forPluginsManifests_expectValidTrue()
     {
         // Arrange
-        $manifests = $this->getManifests("plugins", "plugin");
+        $manifests = $this->getManifests("plugins", 'type="plugin"');
         $schema = dirname(__FILE__) . "/" . $this->xsdVersion . "/plugin.xsd";
 
         // Act
@@ -78,7 +78,7 @@ class validate extends PHPUnit_Framework_TestCase
     public function testValidate_forTemplatesManifests_expectValidTrue()
     {
         // Arrange
-        $manifests = $this->getManifests("templates", "template");
+        $manifests = $this->getManifests("templates", 'type="template"');
         $schema = dirname(__FILE__) . "/" . $this->xsdVersion . "/template.xsd";
 
         // Act
@@ -97,8 +97,27 @@ class validate extends PHPUnit_Framework_TestCase
     public function testValidate_forLibraryManifests_expectValidTrue()
     {
         // Arrange
-        $manifests = $this->getManifests("manifests/libraries", "library");
+        $manifests = $this->getManifests("manifests/libraries", 'type="library"');
         $schema = dirname(__FILE__) . "/" . $this->xsdVersion . "/library.xsd";
+
+        // Act
+        foreach ($manifests as $manifest) {
+            $this->xml->load($manifest);
+            $schemaValidate = $this->xml->schemaValidate($schema);
+
+            // Assert
+            $this->libxml_display_errors();
+
+            //TODO can do this or first invalid manifest will break the build
+            //$this->assertEquals(TRUE, $schemaValidate);
+        }
+    }
+
+    public function testValidate_forLanguagesManifests_expectValidTrue()
+    {
+        // Arrange
+        $manifests = $this->getManifests("languages", "<metafile ");
+        $schema = dirname(__FILE__) . "/" . $this->xsdVersion . "/language.xsd";
 
         // Act
         foreach ($manifests as $manifest) {
@@ -145,7 +164,7 @@ class validate extends PHPUnit_Framework_TestCase
         libxml_clear_errors();
     }
 
-    private function getManifests($folder = 'components', $type = 'component')
+    private function getManifests($folder = 'components', $extensionType)
     {
         //from bootstrap file
         global $joomla_root;
@@ -153,13 +172,13 @@ class validate extends PHPUnit_Framework_TestCase
         $adminManifests = array();
         $adminPath = $joomla_root . 'administrator/' . $folder . '/';
         if (file_exists($adminPath)) {
-            $adminManifests = $this->getManifest($type, $adminPath);
+            $adminManifests = $this->getManifest($extensionType, $adminPath);
         }
 
         $siteManifests = array();
         $sitePath = $joomla_root . $folder . '/';
         if (file_exists($sitePath)) {
-            $siteManifests = $this->getManifest($type, $sitePath);
+            $siteManifests = $this->getManifest($extensionType, $sitePath);
         }
 
         return array_merge($adminManifests, $siteManifests);
@@ -178,7 +197,7 @@ class validate extends PHPUnit_Framework_TestCase
             //TODO poor man approach
             $file = fopen($key, 'r');
             $header = fread($file, 150);
-            if (strpos($header, 'type="' . $extensionType . '"') !== FALSE) {
+            if (strpos($header, $extensionType) !== FALSE) {
                 $manifests[] = $key;
             }
         }
