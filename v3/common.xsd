@@ -45,6 +45,16 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="requiredType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Denote if a field is required or not</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="required"/>
+            <xs:enumeration value="true"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="versionType">
         <xs:annotation>
             <xs:documentation xml:lang="en">String that identifies the version of your extension.</xs:documentation>
@@ -271,7 +281,7 @@
         <xs:attribute name="hint" type="xs:string" />
         <xs:attribute name="hr" use="optional" type="xs:boolean"/>
         <xs:attribute name="extension" type="extensionType" />
-        <xs:attribute name="required" type="xs:boolean"/>
+        <xs:attribute name="required" type="requiredType"/>
         <xs:attribute name="multiple" type="xs:boolean"/>
         <xs:attribute name="readonly" type="xs:boolean"/>
         <xs:attribute name="disabled" type="xs:boolean"/>
