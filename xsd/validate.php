@@ -6,6 +6,7 @@ class validate extends PHPUnit_Framework_TestCase
 
     protected static $count = 0;
     protected static $errors = 0;
+    protected $xml;
 
     protected function setUp()
     {

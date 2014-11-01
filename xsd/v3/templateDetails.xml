@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.6" type="template" method="upgrade" xsi:noNamespaceSchemaLocation="templateDetails.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<name>simple_template</name>
+	<creationDate>July 2008</creationDate>
+	<author>John Doe</author>
+	<authorEmail>john.doe@example.org</authorEmail>
+	<authorUrl>http://www.example.org</authorUrl>
+	<copyright>(C) 2008 Copyright Info</copyright>
+	<license>License Info</license>
+	<version>1.6.0</version>
+	<description>TPL_TPL_SIMPLE_XML_DESCRIPTION</description>
+	<files>
+		<filename>index.php</filename>
+	</files>
+
+	<positions>
+		<position>analytics</position>
+		<position>social</position>
+		<position>drawer</position>
+	</positions>
+	<config>
+		<fields name="params">
+			<fieldset name="base">
+				<field default="true" name="master" type="hidden" value="true"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

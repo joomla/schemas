@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    
+    <xs:include schemaLocation="common.xsd"/>
+    
+    <xs:element name="extension">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="libraryname" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="creationDate" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="author" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="authorEmail" type="validateEmail" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="authorUrl" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="copyright" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="license" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="version" type="versionType" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="description" type="xs:normalizedString"/>
+                
+                <xs:element name="packager" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="packagerurl" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+                
+                <xs:element name="files" type="libraryFilesType" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="updateservers" minOccurs="0" maxOccurs="1"/>
+            </xs:all>
+            
+            <xs:attribute name="method" default="upgrade" type="methodType"/>
+            <xs:attribute name="type" use="required" type="typeType"/>
+            <xs:attribute name="version" use="required" type="cmsversion"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="libraryFilesType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="folder" type="folder" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="file" type="filename" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="folder" use="optional"/>
+    </xs:complexType>
+    
+    
+</xs:schema>
