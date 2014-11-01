@@ -40,6 +40,8 @@
             <xs:enumeration value="2.5"/>
             <xs:enumeration value="3.0"/>
             <xs:enumeration value="3.1"/>
+            <xs:enumeration value="3.2"/>
+            <xs:enumeration value="3.3"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -457,10 +459,10 @@
     </xs:complexType>
 
     <xs:complexType name="filesType">
-        <xs:all>
-            <xs:element name="folder" type="folder" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="folder" type="folder" maxOccurs="unbounded"/>
             <xs:element name="filename" type="filename" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:all>
+        </xs:choice>
         <xs:attribute name="folder" use="optional"/>
     </xs:complexType>
     
@@ -483,10 +485,10 @@
     </xs:complexType>
 
     <xs:complexType name="media">
-        <xs:all>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="folder" type="folder" maxOccurs="unbounded"/>
             <xs:element name="filename" type="filename" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="folder" type="folder" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:all>
+        </xs:choice>
         <xs:attribute name="destination" use="optional" type="xs:string"/>
         <xs:attribute name="folder" use="optional" type="xs:string"/>
     </xs:complexType>
