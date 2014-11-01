@@ -116,7 +116,7 @@ class validate extends PHPUnit_Framework_TestCase
     public function testValidate_forLanguagesManifests_expectValidTrue()
     {
         // Arrange
-        $manifests = $this->getManifests("languages", "<metafile ");
+        $manifests = $this->getManifests("language", "<metafile ");
         $schema = dirname(__FILE__) . "/" . $this->xsdVersion . "/language.xsd";
 
         // Act
