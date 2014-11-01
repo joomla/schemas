@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:include schemaLocation="./common.xsd"/>
+
+    <xs:element name="metafile">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="tag" type="locales" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="author" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="authorEmail" type="validateEmail" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="authorUrl" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="copyright" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="license" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="version" type="versionType" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="creationDate" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="description" type="xs:normalizedString" minOccurs="0" maxOccurs="1"/>
+                
+                <xs:element name="files" type="filesType" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="metadata" type="metadata" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="params" type="params" minOccurs="0" maxOccurs="1"/>
+            </xs:all>
+            <xs:attribute name="client" use="required" type="clientType"/>
+            <xs:attribute name="version" use="required" type="versionType"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="metadata">
+        <xs:all>
+            <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="tag" type="xs:NCName" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="rtl" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="firstDay" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="locale" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="winCodePage" type="xs:NCName" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="backwardLang" type="xs:NCName" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="pdfFontName" type="xs:NCName" minOccurs="0" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="params">
+    </xs:complexType>
+
+</xs:schema>

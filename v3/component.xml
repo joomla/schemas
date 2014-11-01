@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="component" version="1.6" method="upgrade"
+	xsi:noNamespaceSchemaLocation="./component.xsd" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<!-- Note: we can use method="upgrade" to ensure an upgrade regardless of
+	if it is a new install or an actual upgrade; Normal installs will
+	behave like an install but upgrades will be treated appropriately even
+	if the interface doesn't support it properly -->
+	<!-- Generic Metadata -->
+	<name>com_alpha</name>
+	<author>John Doe</author>
+	<authorEmail>john.doe@example.org</authorEmail>
+	<authorUrl>http://www.example.org</authorUrl>
+	<copyright>(C) 2008 Copyright Info</copyright>
+	<license>License Info</license>
+	<version>1.0</version>
+	<creationDate>March 2006</creationDate>
+	<description>COM_ALPHA_XML_DESCRIPTION</description>
+
+	<!-- Installer Hooks -->
+	<scriptfile>file.script.php</scriptfile> <!-- New in 1.6 -->
+
+	<!-- SQL Files -->
+	<!-- Note: The Joomla! 1.0 query method is not supported in 1.6 -->
+	<install> <!-- Runs on install -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	<update> <!-- Runs on update; New in 1.6 -->
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+			<schemapath type="sqlsrv">sql/updates/sqlsrv</schemapath>
+		</schemas>
+	</update>
+
+	<!-- Front end file, media and language specification -->
+	<files folder="site">
+		<filename>alpha.php</filename>
+	</files>
+
+	<!--  Legacy 1.5 Language Support -->
+	<!-- Note: Replace this with the actual path to the language file -->
+	<!--
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB/en-GB.com_alpha.ini</language>
+	</languages>
+	-->
+
+	<media destination="com_alpha">
+		<filename>com_alpha.jpg</filename>
+	</media>
+
+	<administration>
+		<!-- Administrator Menu -->
+		<menu img="components/com_alpha/applications-internet-16.png">Alpha</menu>
+		<submenu>
+			<menu link="option=com_installer">Installer</menu>
+			<menu link="option=com_users">Users</menu>
+		</submenu>
+		<!-- Administrator file and language specification;
+			Note: administrator doesn't have media -->
+		<files folder="admin">
+			<filename>admin.alpha.php</filename>
+			<filename>image.png</filename>
+			<filename>applications-internet.png</filename>
+			<filename>applications-internet-16.png</filename>
+			<folder>sql</folder>
+		</files>
+
+		<!-- Legacy 1.5 Language Support -->
+		<!-- Note: Replace this with the actual path to the language file -->
+ 		<languages folder="admin">
+ 			<language tag="en-GB">en-GB/en-GB.com_alpha.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_alpha.sys.ini</language>
+		</languages>
+
+	</administration>
+
+	<!-- Extension Update Specification -->
+	<updateservers>
+		<server type="extension" priority="1" name="Extension Update Site">http://jsitepoint.com/update/components/com_alpha/extension.xml</server> <!-- useful for single extensions -->
+		<server type="collection" priority="2" name="Collection Update Site">http://jsitepoint.com/update/update.xml</server><!-- useful for collections of extensions -->
+	</updateservers>
+
+	<!-- Tables -->
+	<!-- These are used for backups to determine which tables to backup; ones marked optional are only backed up if they exist -->
+	<tables>
+		<table>#__alpha_install</table>
+		<table type="optional">#__alpha_update</table>
+	</tables>
+
+	<!--  Dependencies -->
+	<dependencies>
+		<dependency type="platform" name="joomla" operator="=" version="1.5" />
+	</dependencies>
+	
+	    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="tagsForSelection" type="sql" query="select id,concat(id,'--',name) as name from #__cedtag_term;" key_field="id" value_field="name" label="MOD_CEDCUSTOMTAGSCLOUD_TAGSFORSELECTION_LABEL" description="MOD_CEDCUSTOMTAGSCLOUD_TAGSFORSELECTION_DESC"
+                    rows="8" cols="40"/>
+            	<field name="tagIds" required="true" type="text" default="" label="MOD_CEDCUSTOMTAGSCLOUD_TAGSFORSELECTION_LABEL" description="MOD_CEDCUSTOMTAGSCLOUD_TAGSFORSELECTION_DESC" size="60"/>
+                <field name="sorting" type="list" default="1" label="MOD_CEDCUSTOMTAGSCLOUD_SORTING_LABEL" description="MOD_CEDCUSTOMTAGSCLOUD_SORTING_DESC"
+                	class="btn-group .blue .bigger">
+                    <option value="tag_latestasort">By Latest created</option>
+                    <option value="tag_alphasort">MOD_CEDCUSTOMTAGSCLOUD_SORTING_VALUE1</option>
+                    <option value="sizeasort">MOD_CEDCUSTOMTAGSCLOUD_SORTING_VALUE2</option>
+                </field>
+                <field name="reverse" type="radio" default="0" label="MOD_CEDCUSTOMTAGSCLOUD_REVERSE_LABEL" description="MOD_CEDCUSTOMTAGSCLOUD_REVERSE_DESC"
+                       class="myCustomClass">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+            <fieldset name="advanced">
+            	<field name="layout" required="false" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC"/>
+                <field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
+                <field name="cache" type="list" default="1" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+                    <option value="1">JGLOBAL_USE_GLOBAL </option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING </option>
+                </field>
+                <field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC"/>
+                <field name="cachemode" type="hidden" default="static">
+                    <option value="static"/>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+	
+</extension>

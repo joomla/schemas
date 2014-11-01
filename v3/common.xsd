@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:simpleType name="methodType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The default value install will be also used if the method attribute is not used. The install value means the
+                installer will gracefully stop if it finds any existing file/folder of the new extension.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="install"/>
+            <xs:enumeration value="upgrade"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="typeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">This attribute describes the type of the extension for the installer. Based on this type further requirements to
+                sub-tags apply.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="component"/>
+            <xs:enumeration value="file"/>
+            <xs:enumeration value="language"/>
+            <xs:enumeration value="library"/>
+            <xs:enumeration value="module"/>
+            <xs:enumeration value="package"/>
+            <xs:enumeration value="plugin"/>
+            <xs:enumeration value="template"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="cmsversion">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">String that identifies the version of Joomla for which this extension is developed.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:enumeration value="1.6"/>
+            <xs:enumeration value="2.5"/>
+            <xs:enumeration value="3.0"/>
+            <xs:enumeration value="3.1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="versionType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">String that identifies the version of your extension.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[.0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="submenu">
+        <xs:sequence>
+            <xs:element name="menu" type="menu" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="menu">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The value inside the tag is the menu's label. Unlike Joomla! 1.5, you can not use a natural language string. For example, if you would enter "Example Component" instead of COM_EXAMPLE, it would result in your component name appearing as example-component in the menu and you would be unable to provide a translation. In order to provide a translation you need to create a file named en-GB.com_example.sys.ini in administrator/languages/en-GB </xs:documentation>
+                </xs:annotation>                
+                <xs:attribute name="img" type="menuImageType">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">The (relative) path to an image (16x16 pixels) to appear beside the menu item.
+                            Must be an url compatible as a file too (e.g. no spaces) !</xs:documentation>
+                    </xs:annotation>  
+                </xs:attribute>
+                <xs:attribute name="link" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">A link to send the user to when the menu item is clicked.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="alt" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en"></xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="view" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en"></xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="menuImageType">
+        <xs:union memberTypes="validFilePath menuImageClassType"/>
+    </xs:simpleType>
+    <xs:simpleType name="menuImageClassType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="class:[a-zA-Z_-]*"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="copyrightType">
+        <xs:union memberTypes="copyrightCustomType copyrightListType"/>
+    </xs:simpleType>
+    <xs:simpleType name="copyrightCustomType">
+        <xs:restriction base="xs:string">
+        </xs:restriction> 
+    </xs:simpleType>
+    <xs:simpleType name="copyrightListType">
+        <xs:restriction base="xs:string">
+            <!--
+            <xs:enumeration value="(C)  Open Source Matters. All rights reserved."/>
+            <xs:enumeration value="Copyright (c) [year] [fullname]"/>
+            <xs:enumeration value="(C) 2005 - 2013 Open Source Matters. All rights reserved."/>
+            <xs:enumeration value="(C) 2005 - 2013 Open Source Matters. All rights reserved."/>
+            <xs:enumeration value="latin-name"/>
+            -->
+        </xs:restriction>
+    </xs:simpleType>
+    
+
+    <xs:complexType name="administration">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The administration section is defined in this element. Since only components apply to both the site and the administrator, only component manifests can include this element.</xs:documentation>
+        </xs:annotation>        
+        <xs:all>
+            <xs:element name="menu" type="menu" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="submenu" type="submenu"  minOccurs="0" maxOccurs="1"/>
+            <xs:element name="files" type="filesType"/>
+            <xs:element name="languages" type="languagesType" minOccurs="0" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+
+
+    <xs:element name="updateservers">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">This element may contain one or more server element, each describing a location to fetch updates from.
+            </xs:documentation>
+        </xs:annotation> 
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="server"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="server">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">This element define one server to fetch updates from.
+            </xs:documentation>
+        </xs:annotation> 
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:anyURI">
+                    <xs:attribute name="name" use="required" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">The name of the update server.</xs:documentation>
+                        </xs:annotation> 
+                    </xs:attribute>
+                    <xs:attribute name="priority" use="required" type="priorityType"/>
+                    <xs:attribute name="type" use="required" type="serverTypeType"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="serverTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The update server type.</xs:documentation>
+        </xs:annotation> 
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="extension"/>
+            <xs:enumeration value="collection"/>
+        </xs:restriction>
+    </xs:simpleType> 
+    <xs:simpleType name="priorityType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The priority of the update server.</xs:documentation>
+        </xs:annotation> 
+        <xs:restriction base="xs:integer">
+        </xs:restriction>
+    </xs:simpleType> 
+    
+
+    <xs:complexType name="update">
+        <xs:sequence>
+            <xs:element name="schemas" type="schemas"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="schemas">
+        <xs:sequence>
+            <xs:element ref="schemapath" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="schemapath">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">This defines the directory that contains SQL files for component incremental database updates. You may choose to put
+                the SQL files somewhere else in your component release, but make sure their location is documented here.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attribute name="type" use="required" type="xs:NCName"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="languagesType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">This tag is considered to be deprecated since Joomla! 1.6. We encourage you to put extension 's language files in the extension folder and Joomla! is responsible for the loading of required language files.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="language" type="languageType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="folder" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="languageType">
+        <xs:simpleContent>
+            <xs:extension base="validFilePath">
+                <xs:attribute name="tag" use="required" type="locales"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="config">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">describes the configuration options for the extension. If applicable, the options will be shown by the appropriate Manager (Plugin Manager, Module Manager or Template Manager). Configuration options can also be defined in a separate file named config.xml. Its root element should be config.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="fields" type="fields" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="fields">
+        <xs:sequence>
+            <xs:element name="fieldset" type="fieldset" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="name" use="required" type="xs:NCName"/>
+        <xs:attribute name="addfieldpath" use="optional" type="validFilePath"/>
+    </xs:complexType>
+
+    <xs:complexType name="fieldset">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="field" type="field"/>
+        </xs:sequence>
+        <xs:attribute name="name" use="required" type="xs:NCName"/>
+        <xs:attribute name="label" use="optional" type="xs:string"/>
+        <xs:attribute name="addfieldpath" use="optional" type="validFilePath"/>
+    </xs:complexType>
+
+    <xs:complexType name="field">
+        <xs:sequence>
+            <xs:element name="option" minOccurs="0" maxOccurs="unbounded" type="optionType"/>
+        </xs:sequence>
+        <xs:attribute name="name" use="required" type="xs:NCName"/>
+        <xs:attribute name="type" use="required" type="fieldType"/>
+        <xs:attribute name="label" use="optional" type="xs:string"/>
+        <xs:attribute name="id" type="xs:string"/>
+        <xs:attribute name="class" type="cssClassType"/>
+        <xs:attribute name="labelclass" type="cssClassType"/>
+        <xs:attribute name="value" type="xs:boolean"/>
+        <xs:attribute name="default"/>
+        <xs:attribute name="description" type="xs:string"/>
+        <xs:attribute name="disable" type="disableType"/>
+        <xs:attribute name="first" type="xs:int"/>
+        <xs:attribute name="last" type="xs:int"/>
+        <xs:attribute name="step" type="xs:int"/>        
+        <xs:attribute name="hint" type="xs:string" />
+        <xs:attribute name="hr" use="optional" type="xs:boolean"/>
+        <xs:attribute name="extension" type="extensionType" />
+        <xs:attribute name="required" type="xs:boolean"/>
+        <xs:attribute name="multiple" type="xs:boolean"/>
+        <xs:attribute name="readonly" type="xs:boolean"/>
+        <xs:attribute name="disabled" type="xs:boolean"/>
+        <xs:attribute name="autofocus" type="xs:boolean"/>
+        <xs:attribute name="autocomplete" type="xs:boolean"/>
+        <xs:attribute name="spellcheck" type="xs:boolean"/>
+        <xs:attribute name="published" type="xs:string"/>
+        <xs:attribute name="format" type="xs:string"/>   <!--todo %Y-%m-%d %H:%M:%S when type="calendar" -->
+        <xs:attribute name="hidden" type="xs:boolean"/>
+        <xs:attribute name="inputmode" type="inputmodeType"/>
+        <xs:attribute name="size" type="xs:integer"/>
+        <xs:attribute name="maxlength" type="xs:integer"/>
+        <xs:attribute name="cols" type="xs:integer"/>
+        <xs:attribute name="rows" type="xs:integer"/>
+        <xs:attribute name="columns" type="xs:integer"/>
+        <xs:attribute name="query"/>
+        <xs:attribute name="key_field" type="xs:NCName"/>
+        <xs:attribute name="value_field" type="xs:string"/>
+        <xs:attribute name="translate" type="xs:boolean"/>
+        <xs:attribute name="translate_label" type="xs:boolean"/>
+        <xs:attribute name="translate_description" type="xs:boolean"/>
+        <xs:attribute name="translate_hint" type="xs:boolean"/>
+        <xs:attribute name="onclick" type="xs:string"/>
+        <xs:attribute name="onchange" type="xs:string"/>
+        <xs:attribute name="control" type="xs:NCName"/>
+        <xs:attribute name="accept" type="xs:string"/>
+        <xs:attribute name="filter" type="xs:string"/>
+        <xs:attribute name="exclude" type="xs:string"/>
+        <xs:attribute name="stripext" type="xs:boolean"/>
+        <xs:attribute name="hide_none" type="xs:boolean"/>
+        <xs:attribute name="hide_default" type="xs:boolean"/>
+        <xs:attribute name="directory" type="xs:string"/>
+        <xs:attribute name="client" type="clientType"/>
+        <xs:attribute name="heading" type="xs:NCName"/>
+        <xs:attribute name="close" type="xs:boolean"/>
+        <xs:attribute name="strengthmeter" type="xs:boolean"/>
+        <xs:attribute name="minimum_length" type="xs:integer"/>
+        <xs:attribute name="minimum_integers" type="xs:integer"/>
+        <xs:attribute name="minimum_symbols" type="xs:integer"/>
+        <xs:attribute name="minimum_uppercase" type="xs:integer"/>
+        <xs:attribute name="validate" type="validateType"/>
+    </xs:complexType>
+    
+    <xs:simpleType name="disableType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en"></xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="separator"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    
+    <xs:simpleType name="validateType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en"></xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="url"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="extensionType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:pattern value="com_[\w]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="cssClassType">
+        <xs:restriction base="xs:string">
+            <!-- http://www.w3.org/TR/CSS21/grammar.html#scanner -->
+            <xs:pattern value="(.-?[_a-zA-Z]+[_a-zA-Z0-9-]*\s*)*"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="helpType">
+        <xs:attribute name="key" use="required" type="helpKeyType"/>
+    </xs:complexType>
+    
+    <xs:simpleType name="helpKeyType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z_]*"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    
+
+    <xs:simpleType name="clientType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The client attribute allows you to specify for which application client the new module is available.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="site"/>
+            <xs:enumeration value="administrator"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="inputmodeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en"></xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="verbatim"/>
+            <xs:enumeration value="latin-name"/>
+            <xs:enumeration value="latin-prose"/>
+            <xs:enumeration value="full-width-latin"/>
+            <xs:enumeration value="kana"/>
+            <xs:enumeration value="katakana"/>
+            <xs:enumeration value="numeric"/>
+            <xs:enumeration value="tel"/>
+            <xs:enumeration value="email"/>
+            <xs:enumeration value="url"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="fieldType">
+        <xs:union memberTypes="fieldTypeEnum fieldTypeAnyString"/>
+    </xs:simpleType>
+    <xs:simpleType name="fieldTypeEnum">
+        <xs:annotation>
+            <xs:documentation xml:lang="en"></xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="accesslevel"/>
+            <xs:enumeration value="cachehandler"/>
+            <xs:enumeration value="calendar"/>
+            <xs:enumeration value="category"/> 
+            <xs:enumeration value="checkbox"/>
+            <xs:enumeration value="checkboxes"/>
+            <xs:enumeration value="color"/>
+            <xs:enumeration value="combo"/>
+            <xs:enumeration value="databaseconnection"/>
+            <xs:enumeration value="groupedlist"/>
+            <xs:enumeration value="hidden"/>
+            <xs:enumeration value="filelist"/>
+            <xs:enumeration value="folderlist"/>
+            <xs:enumeration value="file"/>
+            <xs:enumeration value="email"/>
+            <xs:enumeration value="note"/>
+            <xs:enumeration value="password"/>
+            <xs:enumeration value="integer"/>
+            <xs:enumeration value="language"/>
+            <xs:enumeration value="imagelist"/>
+            <xs:enumeration value="textarea"/>
+            <xs:enumeration value="usergroup"/>
+            <xs:enumeration value="tel"/>
+            <xs:enumeration value="url"/>
+            <xs:enumeration value="timezone"/>
+            <xs:enumeration value="spacer"/>
+            <xs:enumeration value="sessionhandler"/>
+            <xs:enumeration value="plugins"/>
+            <xs:enumeration value="sql"/>
+            <xs:enumeration value="text"/>
+            <xs:enumeration value="list"/>
+            <xs:enumeration value="radio"/>
+            <xs:enumeration value="hidden"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="fieldTypeAnyString">
+        <xs:restriction base="xs:string">
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType mixed="true" name="optionType">
+        <xs:attribute name="value" use="required" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="sql">
+        <xs:sequence>
+            <xs:element ref="sql"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="sql">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="file" type="file" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType mixed="true" name="file">
+        <xs:attribute name="plugin" use="optional" type="xs:NCName"/>
+        <xs:attribute name="charset" use="required" type="xs:NCName"/>
+        <xs:attribute name="driver" use="required" type="xs:NCName"/>
+        <xs:attribute name="folder" type="xs:NCName"/>
+    </xs:complexType>
+
+    <xs:complexType name="filesType">
+        <xs:all>
+            <xs:element name="folder" type="folder" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="filename" type="filename" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:all>
+        <xs:attribute name="folder" use="optional"/>
+    </xs:complexType>
+    
+    <xs:complexType name="filename">
+        <xs:simpleContent>
+            <xs:extension base="validFilePath">
+                <xs:attribute name="plugin" use="optional" type="xs:NCName"/>
+                <xs:attribute name="module" use="optional" type="xs:NCName"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="folder">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Specify a directory in the ZIP package to copy from. This will copy an entire folder at once</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"></xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="media">
+        <xs:all>
+            <xs:element name="filename" type="filename" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="folder" type="folder" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:all>
+        <xs:attribute name="destination" use="optional" type="xs:string"/>
+        <xs:attribute name="folder" use="optional" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="tables">
+        <xs:sequence>
+            <xs:element name="table" type="table" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType mixed="true" name="table">
+        <xs:attribute name="type" type="xs:NCName"/>
+    </xs:complexType>
+
+    <xs:complexType name="dependencies">
+        <xs:sequence>
+            <xs:element name="dependency" type="dependency"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="dependency">
+        <xs:attribute name="name" use="required" type="xs:NCName"/>
+        <xs:attribute name="operator" use="required" type="dependencyOperatorType"/>
+        <xs:attribute name="type" use="required" type="dependencyType"/>
+        <xs:attribute name="version" use="required" type="versionType"/>
+    </xs:complexType>
+
+    <xs:simpleType name="dependencyOperatorType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Dependencies are not currently supported, but were added for that possibility in the future.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value=">"/>
+            <xs:enumeration value="="/>
+        </xs:restriction>
+    </xs:simpleType> 
+    
+    <xs:simpleType name="dependencyType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Dependencies are not currently supported, but were added for that possibility in the future.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="library"/>
+            <xs:enumeration value="module"/>
+            <xs:enumeration value="plugin"/>
+            <xs:enumeration value="platform"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="positions">
+        <xs:sequence>
+            <xs:element name="position" maxOccurs="unbounded" type="xs:NCName"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="locales">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">This attribute describes the type of the extension for the installer. Based on this type further requirements to
+                sub-tags apply.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="af-ZA"/>
+            <xs:enumeration value="ar-AA"/>
+            <xs:enumeration value="az-AZ"/>
+            <xs:enumeration value="be-BY"/>
+            <xs:enumeration value="bg-BG"/>
+            <xs:enumeration value="bn-BD"/>
+            <xs:enumeration value="bn-IN"/>
+            <xs:enumeration value="bs-BA"/>
+            <xs:enumeration value="ca-ES"/>
+            <xs:enumeration value="cs-CZ"/>
+            <xs:enumeration value="da-DK"/>
+            <xs:enumeration value="DE-CH"/>
+            <xs:enumeration value="de-DE"/>
+            <xs:enumeration value="el-GR"/>
+            <xs:enumeration value="en-AU"/>
+            <xs:enumeration value="en-GB"/>
+            <xs:enumeration value="en-US"/>
+            <xs:enumeration value="eo-XX"/>
+            <xs:enumeration value="es-ES"/>
+            <xs:enumeration value="et-EE"/>
+            <xs:enumeration value="eu-ES"/>
+            <xs:enumeration value="fa-AF"/>
+            <xs:enumeration value="fa-IR"/>
+            <xs:enumeration value="fi-FI"/>
+            <xs:enumeration value="fr-FR"/>
+            <xs:enumeration value="gl-ES"/>
+            <xs:enumeration value="gu-IN"/>
+            <xs:enumeration value="he-IL"/>
+            <xs:enumeration value="hi-IN"/>
+            <xs:enumeration value="hr-HR"/>
+            <xs:enumeration value="hu-HU"/>
+            <xs:enumeration value="hy-AM"/>
+            <xs:enumeration value="id-ID"/>
+            <xs:enumeration value="is-IS"/>
+            <xs:enumeration value="it-IT"/>
+            <xs:enumeration value="ja-JP"/>
+            <xs:enumeration value="ka-GE"/>
+            <xs:enumeration value="km-KH"/>
+            <xs:enumeration value="lo-LA"/>
+            <xs:enumeration value="lt-LT"/>
+            <xs:enumeration value="lv-LV"/>
+            <xs:enumeration value="mk-MK"/>
+            <xs:enumeration value="ml-IN"/>
+            <xs:enumeration value="mn-MN"/>
+            <xs:enumeration value="ms-MY"/>
+            <xs:enumeration value="nb-NO"/>
+            <xs:enumeration value="nl-NL"/>
+            <xs:enumeration value="pl-PL"/>
+            <xs:enumeration value="ps-AF"/>
+            <xs:enumeration value="ps-AF"/>
+            <xs:enumeration value="ps-AF"/>
+            <xs:enumeration value="pt-BR"/>
+            <xs:enumeration value="pt-BR"/>
+            <xs:enumeration value="pt-PT"/>
+            <xs:enumeration value="ro-RO"/>
+            <xs:enumeration value="ru-RU"/>
+            <xs:enumeration value="si-LK"/>
+            <xs:enumeration value="sk-SK"/>
+            <xs:enumeration value="sq-AL"/>
+            <xs:enumeration value="sr-ME"/>
+            <xs:enumeration value="sr-RS"/>
+            <xs:enumeration value="sr-RS"/>
+            <xs:enumeration value="sr-YU"/>
+            <xs:enumeration value="sr-YU"/>
+            <xs:enumeration value="ta-IN"/>
+            <xs:enumeration value="ta-LK"/>
+            <xs:enumeration value="th-TH"/>
+            <xs:enumeration value="tl-PH"/>
+            <xs:enumeration value="tr-TR"/>
+            <xs:enumeration value="tr-TR"/>
+            <xs:enumeration value="tr-TR"/>
+            <xs:enumeration value="uk-UA"/>
+            <xs:enumeration value="ur-PK"/>
+            <xs:enumeration value="vi-VN"/>
+            <xs:enumeration value="zh-CN"/>
+            <xs:enumeration value="zh-TW"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="filenameSafePattern">
+        <xs:annotation>
+            <xs:documentation>Defines a string subset safe in most file systems as file name (excluding path).</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:pattern value="[\-.0-9a-zA-Z_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="validateEmail">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="N/A||[A-Za-z0-9_]+([-+.'][A-Za-z0-9_]+)*@[A-Za-z0-9_]+([-.][A-Za-z0-9_]+)*\.[A-Za-z0-9_]+([-.][A-Za-z0-9_]+)*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="validFilePath">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Validate filepath</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[./A-Za-z0-9_-]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="validScript">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Validate filepath</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[.A-Za-z0-9_-]*.php"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+</xs:schema>

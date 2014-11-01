@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:include schemaLocation="./common.xsd"/>
+  
+  <xs:element name="extension">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="packagename" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="version" type="versionType" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="url" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="packager" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="packagerurl" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="description" type="xs:normalizedString"/>
+        <xs:element name="scriptfile" type="validScript" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="updateservers" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="files" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="update" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+      </xs:all>
+
+      <xs:attribute name="method" default="upgrade" type="methodType"/>
+      <xs:attribute name="type" use="required" type="typeType"/>
+      <xs:attribute name="version" use="required" type="cmsversion"/>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="files">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="file"/>
+      </xs:sequence>
+      <xs:attribute name="folder" use="optional" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="file">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="validSubPackageType">
+          <xs:attribute name="client" type="clientType"/>
+          <xs:attribute name="group" type="xs:string"/>
+          <xs:attribute name="id" use="required" type="xs:NCName"/>
+          <xs:attribute name="type" use="required" type="typeType"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="validSubPackageType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Validate filepath</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[.A-Za-z0-9_-]*.zip"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  
+</xs:schema>
