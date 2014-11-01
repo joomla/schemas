@@ -31,10 +31,10 @@
     </xs:element>
     
     <xs:complexType name="libraryFilesType">
-        <xs:all>
+        <xs:choice maxOccurs="unbounded">
             <xs:element name="folder" type="folder" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="file" type="filename" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:all>
+        </xs:choice>
         <xs:attribute name="folder" use="optional"/>
     </xs:complexType>
     

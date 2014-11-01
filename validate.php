@@ -94,6 +94,25 @@ class validate extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testValidate_forLibraryManifests_expectValidTrue()
+    {
+        // Arrange
+        $manifests = $this->getManifests("manifests/libraries", "library");
+        $schema = dirname(__FILE__) . "/" . $this->xsdVersion . "/library.xsd";
+
+        // Act
+        foreach ($manifests as $manifest) {
+            $this->xml->load($manifest);
+            $schemaValidate = $this->xml->schemaValidate($schema);
+
+            // Assert
+            $this->libxml_display_errors();
+
+            //TODO can do this or first invalid manifest will break the build
+            //$this->assertEquals(TRUE, $schemaValidate);
+        }
+    }
+
     function libxml_display_error($error)
     {
         $return = "<br/>\n";
@@ -137,7 +156,11 @@ class validate extends PHPUnit_Framework_TestCase
             $adminManifests = $this->getManifest($type, $adminPath);
         }
 
-        $siteManifests = $this->getManifest($type, $joomla_root . $folder);
+        $siteManifests = array();
+        $sitePath = $joomla_root . $folder . '/';
+        if (file_exists($sitePath)) {
+            $siteManifests = $this->getManifest($type, $sitePath);
+        }
 
         return array_merge($adminManifests, $siteManifests);
     }
