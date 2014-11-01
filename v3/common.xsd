@@ -649,13 +649,11 @@
         </xs:restriction>
     </xs:simpleType>
 
-
     <xs:simpleType name="validateEmail">
         <xs:restriction base="xs:string">
             <xs:pattern value="N/A||[A-Za-z0-9_]+([-+.'][A-Za-z0-9_]+)*@[A-Za-z0-9_]+([-.][A-Za-z0-9_]+)*\.[A-Za-z0-9_]+([-.][A-Za-z0-9_]+)*|\s*"/>
         </xs:restriction>
     </xs:simpleType>
-
 
     <xs:simpleType name="validFilePath">
         <xs:annotation>
