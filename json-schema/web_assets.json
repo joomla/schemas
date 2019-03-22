@@ -25,10 +25,7 @@
           }
         },
         "attribute": {
-          "type": "array",
-          "contains": {
-            "type": "string"
-          }
+          "type": "object"
         }
       },
       "required": ["name"]
