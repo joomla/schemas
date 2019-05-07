@@ -5,7 +5,10 @@
     "assets": {
       "type": "object",
       "properties": {
-        "name": { "type": "string" },
+        "name": {
+          "type": "string",
+          "pattern": "[a-zA-Z0-9\\_\\-\\.]"
+        },
         "dependencies": {
           "type": "array",
           "contains": {
@@ -26,6 +29,13 @@
         },
         "attribute": {
           "type": "object"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "class": {
+          "type": "string",
+          "pattern": "[a-zA-Z0-9\\_]"
         }
       },
       "required": ["name"]
@@ -45,6 +55,9 @@
       "type": "string"
     },
     "license": {
+      "type": "string"
+    },
+    "namespace": {
       "type": "string"
     },
     "assets": {
