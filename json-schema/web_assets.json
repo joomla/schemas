@@ -5,7 +5,10 @@
     "assets": {
       "type": "object",
       "properties": {
-        "name": { "type": "string" },
+        "name": {
+          "type": "string",
+          "pattern": "[a-zA-Z0-9\_\-\.]"
+        },
         "dependencies": {
           "type": "array",
           "contains": {
@@ -31,7 +34,8 @@
           "type": "string"
         },
         "class": {
-          "type": "string"
+          "type": "string",
+          "pattern": "[a-zA-Z0-9\_]"
         }
       },
       "required": ["name"]
