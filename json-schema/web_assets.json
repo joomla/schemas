@@ -26,6 +26,12 @@
         },
         "attribute": {
           "type": "object"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "class": {
+          "type": "string"
         }
       },
       "required": ["name"]
@@ -45,6 +51,9 @@
       "type": "string"
     },
     "license": {
+      "type": "string"
+    },
+    "namespace": {
       "type": "string"
     },
     "assets": {
