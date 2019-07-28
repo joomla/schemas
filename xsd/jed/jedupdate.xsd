@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  
+  <xs:element name="jedupdate">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="core_body" type="xs:string"/>
+        <xs:element name="homepage_link" type="xs:anyURI"/>
+        <xs:element name="download_link" type="xs:anyURI"/>
+        <xs:element name="demo_link" type="xs:anyURI"/>
+        <xs:element name="documentation_link" type="xs:anyURI"/>
+        <xs:element name="support_link" type="xs:anyURI"/>
+        <xs:element name="license_link" type="xs:anyURI"/>
+        <xs:element name="version" type="xs:string"/>
+        <xs:element ref="compatibility"/>
+      </xs:all>
+      <xs:attribute name="version" use="required" type="jedupdateVersionType"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="compatibility">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="version"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="version" type="xs:string"/>
+    
+  <xs:simpleType name="jedupdateVersionType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This attribute describes the version.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

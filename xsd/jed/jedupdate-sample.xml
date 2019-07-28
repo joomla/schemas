@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jedupdate version="1" xsi:noNamespaceSchemaLocation="./jedupdate.xsd" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    
+    <core_body>
+        An introduction text.
+        
+        ### a title
+        * a list entry
+        * another list entry
+        
+        ### another title
+        Some text.
+        
+    </core_body>
+    
+    <homepage_link>http://www.acme.com</homepage_link>
+    <download_link>https://www.acme.com/download/</download_link>
+    <demo_link>https://www.acme.com/demo/</demo_link>
+    <documentation_link>https://www.acme.com/doc/</documentation_link>
+    <support_link>https://www.acme.com/forums/</support_link>
+    <license_link>https://www.acme.com/licence/</license_link>
+    
+    <version>1.0.0</version>
+    
+    <compatibility>
+        <version>25</version>
+        <version>30</version>
+    </compatibility>
+</jedupdate>
