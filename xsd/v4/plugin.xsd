@@ -53,7 +53,7 @@
     </xs:simpleType>
     <xs:simpleType name="groupTypeEnum">
         <xs:annotation>
-            <xs:documentation xml:lang="en">The group name specifies for which group of plugins the new plugin is available. The existing groups are the folder names within the directory /plugins. 
+            <xs:documentation xml:lang="en">The group name specifies which group of plugins the new plugin is available for. The existing groups are the folder names within the directory /plugins. 
                 The installer will create new folder names for group names that do not exist yet.
             </xs:documentation>
         </xs:annotation>

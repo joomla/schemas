@@ -3,7 +3,7 @@
 
     <xs:simpleType name="methodType">
         <xs:annotation>
-            <xs:documentation xml:lang="en">The default value install will be also used if the method attribute is not used. The install value means the
+            <xs:documentation xml:lang="en">The default value install will be used if the method attribute is not used. The install value means the
                 installer will gracefully stop if it finds any existing file/folder of the new extension.
             </xs:documentation>
         </xs:annotation>
@@ -33,7 +33,7 @@
 
     <xs:simpleType name="cmsversion">
         <xs:annotation>
-            <xs:documentation xml:lang="en">String that identifies the version of Joomla for which this extension is developed.</xs:documentation>
+            <xs:documentation xml:lang="en">String that identifies the version of Joomla this extension is developed for.</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:decimal">
             <xs:enumeration value="1.6"/>
@@ -74,12 +74,12 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:annotation>
-                    <xs:documentation xml:lang="en">The value inside the tag is the menu's label. Unlike Joomla! 1.5, you can not use a natural language string. For example, if you would enter "Example Component" instead of COM_EXAMPLE, it would result in your component name appearing as example-component in the menu and you would be unable to provide a translation. In order to provide a translation you need to create a file named en-GB.com_example.sys.ini in administrator/languages/en-GB </xs:documentation>
+                    <xs:documentation xml:lang="en">The value inside the tag is the menu's label. Unlike Joomla! 1.5, you can not use a natural language string. For example, if you enter "Example Component" instead of COM_EXAMPLE, it would result in your component name appearing as example-component in the menu and you would be unable to provide a translation. In order to provide a translation you need to create a file named en-GB.com_example.sys.ini in administrator/languages/en-GB </xs:documentation>
                 </xs:annotation>                
                 <xs:attribute name="img" type="menuImageType">
                     <xs:annotation>
                         <xs:documentation xml:lang="en">The (relative) path to an image (16x16 pixels) to appear beside the menu item.
-                            Must be an url compatible as a file too (e.g. no spaces) !</xs:documentation>
+                            Must be a url compatible as a file too (e.g. no spaces) !</xs:documentation>
                     </xs:annotation>  
                 </xs:attribute>
                 <xs:attribute name="link" type="xs:string">
@@ -155,7 +155,7 @@
 
     <xs:element name="updateservers">
         <xs:annotation>
-            <xs:documentation xml:lang="en">This element may contain one or more server element, each describing a location to fetch updates from.
+            <xs:documentation xml:lang="en">This element may contain one or more server elements, each describing a location to fetch updates from.
             </xs:documentation>
         </xs:annotation> 
         <xs:complexType mixed="true">
@@ -166,7 +166,7 @@
     </xs:element>
     <xs:element name="server">
         <xs:annotation>
-            <xs:documentation xml:lang="en">This element define one server to fetch updates from.
+            <xs:documentation xml:lang="en">This element defines one server to fetch updates from.
             </xs:documentation>
         </xs:annotation> 
         <xs:complexType>
@@ -226,7 +226,7 @@
 
     <xs:complexType name="languagesType">
         <xs:annotation>
-            <xs:documentation xml:lang="en">This tag is considered to be deprecated since Joomla! 1.6. We encourage you to put extension 's language files in the extension folder and Joomla! is responsible for the loading of required language files.
+            <xs:documentation xml:lang="en">This tag is considered to be deprecated since Joomla! 1.6. We encourage you to put extension's language files in the extension folder and Joomla! is responsible for the loading of required language files.
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
@@ -246,7 +246,7 @@
 
     <xs:complexType name="config">
         <xs:annotation>
-            <xs:documentation xml:lang="en">describes the configuration options for the extension. If applicable, the options will be shown by the appropriate Manager (Plugin Manager, Module Manager or Template Manager). Configuration options can also be defined in a separate file named config.xml. Its root element should be config.
+            <xs:documentation xml:lang="en">Describes the configuration options for the extension. If applicable, the options will be shown by the appropriate Manager (Plugin Manager, Module Manager or Template Manager). Configuration options can also be defined in a separate file named config.xml. Its root element should be config.
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
@@ -380,7 +380,7 @@
 
     <xs:simpleType name="clientType">
         <xs:annotation>
-            <xs:documentation xml:lang="en">The client attribute allows you to specify for which application client the new module is available.</xs:documentation>
+            <xs:documentation xml:lang="en">The client attribute allows you to specify which application client the new module is available for.</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:enumeration value="site"/>
@@ -497,7 +497,7 @@
 
     <xs:complexType name="folder">
         <xs:annotation>
-            <xs:documentation xml:lang="en">Specify a directory in the ZIP package to copy from. This will copy an entire folder at once</xs:documentation>
+            <xs:documentation xml:lang="en">Specify a directory in the ZIP package to copy from. This will copy an entire folder at once.</xs:documentation>
         </xs:annotation>
         <xs:simpleContent>
             <xs:extension base="xs:string"></xs:extension>
