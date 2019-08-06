@@ -9,6 +9,10 @@
           "type": "string",
           "pattern": "[a-zA-Z0-9\\_\\-\\.]"
         },
+        "type": {
+          "type": "string",
+          "enum": ["style", "script", "preset", "webcomponent"]
+        },
         "dependencies": {
           "type": "array",
           "contains": {
@@ -16,9 +20,6 @@
           }
         },
         "uri": {
-          "type": "string"
-        },
-        "type": {
           "type": "string"
         },
         "attribute": {
@@ -32,7 +33,7 @@
           "pattern": "[a-zA-Z0-9\\_]"
         }
       },
-      "required": ["name"]
+      "required": ["name", "type"]
     }
   },
 
