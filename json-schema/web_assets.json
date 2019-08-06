@@ -15,17 +15,11 @@
             "type": "string"
           }
         },
-        "js": {
-          "type": "array",
-          "contains": {
-            "type": "string"
-          }
+        "uri": {
+          "type": "string"
         },
-        "css": {
-          "type": "array",
-          "contains": {
-            "type": "string"
-          }
+        "type": {
+          "type": "string"
         },
         "attribute": {
           "type": "object"
