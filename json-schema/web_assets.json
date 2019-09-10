@@ -55,7 +55,7 @@
       "type": "string"
     },
     "license": {
-      "type": "string"
+      "type": "string",
       "description": "License name. This SHOULD be a valid SPDX license identifier."
     },
     "namespace": {
