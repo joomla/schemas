@@ -6,39 +6,49 @@
       "type": "object",
       "properties": {
         "name": {
+          "description": "The name of the asset item, eg: com_foo.bar",
           "type": "string",
           "pattern": "[a-zA-Z0-9\\_\\-\\.]"
         },
+        "type": {
+          "description": "The type of the asset item",
+          "type": "string",
+          "enum": ["style", "script", "preset"]
+        },
         "dependencies": {
+          "description": "A list of the item dependencies",
           "type": "array",
           "contains": {
             "type": "string"
           }
         },
-        "js": {
-          "type": "array",
-          "contains": {
-            "type": "string"
-          }
-        },
-        "css": {
-          "type": "array",
-          "contains": {
-            "type": "string"
-          }
+        "uri": {
+          "description": "File uri/path string, full or relative to 'media/' folder, eg: com_foo/bar.js",
+          "type": "string"
         },
         "attribute": {
+          "description": "The item attributes",
           "type": "object"
         },
         "namespace": {
+          "description": "Namespace of a class that will be loaded with this item",
           "type": "string"
         },
         "class": {
+          "description": "Class name that will be loaded with this item",
           "type": "string",
           "pattern": "[a-zA-Z0-9\\_]"
+        },
+        "version": {
+          "description": "Version of the asset item",
+          "type": "string"
+        },
+        "webcomponent": {
+          "description": "A boolean flag set to 'true' if the asset item is a WebComponent, otherwise can be ignored",
+          "type": "boolean"
         }
       },
-      "required": ["name"]
+      "required": ["name", "type"]
     }
   },
 
