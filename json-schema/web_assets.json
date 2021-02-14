@@ -42,10 +42,6 @@
         "version": {
           "description": "Version of the asset item",
           "type": "string"
-        },
-        "webcomponent": {
-          "description": "A boolean flag set to 'true' if the asset item is a WebComponent, otherwise can be ignored",
-          "type": "boolean"
         }
       },
       "required": ["name", "type"]
