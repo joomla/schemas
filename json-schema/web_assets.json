@@ -26,7 +26,7 @@
           "description": "File uri/path string, full or relative to 'media/' folder, eg: com_foo/bar.js",
           "type": "string"
         },
-        "attribute": {
+        "attributes": {
           "description": "The item attributes",
           "type": "object"
         },
