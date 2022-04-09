@@ -26,7 +26,8 @@ steps:
       key:
         from_secret: schema_key
       port: 22
-      target: ~
+      target:
+        from_secret: schema_target
       source: schema-packages.bz2
 
   - name: extract_package
@@ -54,6 +55,6 @@ trigger:
 
 ---
 kind: signature
-hmac: a1dabf4e7c297e663a187c460ec59173fde7ff95d9348212e4e06f57f312b73a
+hmac: 40998be8e49a2dea5b7ae398532f2937d63079312b56ef37163f458732dfa001
 
 ...
