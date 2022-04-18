@@ -22,14 +22,14 @@ steps:
         - xsd/v4/*
       rm: true
 
-#trigger:
-#  branch:
-#    - master
-#  event:
-#    - push
+trigger:
+  branch:
+    - master
+  event:
+    - push
 
 ---
 kind: signature
-hmac: 2c1f3480b1263c9e054d20583d8ffa2de2c3144835b05998b8a5fc7715c1e630
+hmac: d2cd9ebfe965e384ad85163bcdae2c5ed6821d6c050ae5f755e68473f521431b
 
 ...
