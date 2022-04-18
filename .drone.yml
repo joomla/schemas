@@ -7,6 +7,15 @@ clone:
 steps:
   - name: deploy_schemas
     image: debian:stable-slim
+    environment:
+      schema_key:
+        from_secret: schema_key
+      schema_user:
+        from_secret: schema_user
+      schema_host:
+        from_secret: schema_host
+      schema_target:
+        from_secret: schema_target
     commands:
       - apt update && apt install -y rclone openssh-client
       - mkdir -p ~/.ssh
@@ -25,6 +34,6 @@ trigger:
 
 ---
 kind: signature
-hmac: 8d17b4ffdfa075766495ca18b98c6a138bcd9216e57b77b2503c0a29e4a5df5c
+hmac: acdbab53df4721708474e29cd27172dfb88e3f9097c96a530960f46ffdc195f5
 
 ...
