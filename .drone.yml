@@ -15,7 +15,7 @@ steps:
       - echo "$schema_key" > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
       - ssh-add
-      - rclone sync . $schema_host:$schema_target -v --include "*.xsd" --dry-run
+      - rclone sync . $schema_host:$schema_target -v --include "*.xsd" --rc-user $schema_user --dry-run
 
 trigger:
   branch:
@@ -25,6 +25,6 @@ trigger:
 
 ---
 kind: signature
-hmac: 97a7279c3b04e431ef654a3f2d63617d5d65485ea052ee74d2d1b4f5bd9f9d7d
+hmac: 8d17b4ffdfa075766495ca18b98c6a138bcd9216e57b77b2503c0a29e4a5df5c
 
 ...
