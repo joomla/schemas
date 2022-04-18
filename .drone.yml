@@ -5,47 +5,17 @@ name: deploy
 clone:
 
 steps:
-  - name: prepare_package
-    image: joomlaprojects/docker-images:packager
+  - name: deploy_schemas
+    image: debian:stable-slim
     commands:
-      - mkdir transfer
-      - mv json-schema transfer/
-      - mv xsd/v3 transfer/
-      - mv xsd/v4 transfer/
-      - cd transfer
-      - tar -cjf ../schema-packages.bz2 .
-
-  - name: upload_package
-    image: appleboy/drone-scp
-    depends_on: [ prepare_package ]
-    settings:
-      host:
-        from_secret: schema_host
-      user:
-        from_secret: schema_user
-      key:
-        from_secret: schema_key
-      port: 22
-      target:
-        from_secret: schema_target
-      source: schema-packages.bz2
-
-  - name: extract_package
-    image: appleboy/drone-ssh
-    depends_on: [ upload_package ]
-    settings:
-      host:
-        from_secret: schema_host
-      user:
-        from_secret: schema_user
-      key:
-        from_secret: schema_key
-      port: 22
-      script:
-        - rm -rf public_html/schemas
-        - mkdir public_html/schemas
-        - tar jxf schema-packages.bz2 -C public_html/schemas
-        - rm -f schema-packages.bz2
+      - apt update && apt install -y rclone openssh-client
+      - mkdir -p ~/.ssh
+      - eval $(ssh-agent -s)
+      - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+      - echo "$schema_key" > ~/.ssh/id_rsa
+      - chmod 600 ~/.ssh/id_rsa
+      - ssh-add
+      - rclone sync . $schema_host:$schema_target -v --include "*.xsd" --dry-run
 
 trigger:
   branch:
@@ -55,6 +25,6 @@ trigger:
 
 ---
 kind: signature
-hmac: 40998be8e49a2dea5b7ae398532f2937d63079312b56ef37163f458732dfa001
+hmac: 97a7279c3b04e431ef654a3f2d63617d5d65485ea052ee74d2d1b4f5bd9f9d7d
 
 ...
