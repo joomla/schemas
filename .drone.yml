@@ -6,7 +6,7 @@ clone:
 
 steps:
   - name: deploy_schemas
-    image: debian:stable-slim
+    image: joomlaprojects/docker-images:packager
     environment:
       schema_key:
         from_secret: schema_key
@@ -16,8 +16,9 @@ steps:
         from_secret: schema_host
       schema_target:
         from_secret: schema_target
+      RINGCENTRAL_WEBHOOK:
+        from_secret: notification_url
     commands:
-      - apt update && apt install -y rclone openssh-client
       - mkdir -p ~/.ssh
       - eval $(ssh-agent -s)
       - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
@@ -26,6 +27,7 @@ steps:
       - ssh-add
       - rclone config create schema sftp host $schema_host user $schema_user port 22 use_insecure_cipher true disable_hashcheck true
       - rclone sync . schema:$schema_target -v --include "*.xsd" --include "*.json"
+      - /bin/notify
 
 trigger:
   branch:
@@ -35,6 +37,6 @@ trigger:
 
 ---
 kind: signature
-hmac: 28e1f0ec2f7c2fbff1cc82a925c1e9c629cdbce42ef0e65c70b98759f16401cf
+hmac: 84da7373285199103424f8c5e4dccece3cf2ebea928813d998c895799f6663b5
 
 ...
