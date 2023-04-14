@@ -42,6 +42,14 @@
         "version": {
           "description": "Version of the asset item",
           "type": "string"
+        },
+        "deprecated": {
+          "description": "A flag to mark a deprecated assets",
+          "type": "boolean"
+        },
+        "deprecatedMsg": {
+          "description": "An optional message with deprecation information",
+          "type": "string"
         }
       },
       "required": ["name", "type"]
