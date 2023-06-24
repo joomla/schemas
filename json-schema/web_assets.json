@@ -50,9 +50,43 @@
         "deprecatedMsg": {
           "description": "An optional message with deprecation information",
           "type": "string"
+        },
+        "importmap": {
+          "description": "A flag which indicates that the asset is for importmap",
+          "type": "boolean"
+        },
+        "importmapName": {
+          "description": "An optional module name for the asset in importmap",
+          "type": "string"
+        },
+        "importmapScope": {
+          "description": "An optional scope path, for the asset in importmap",
+          "type": "string"
         }
       },
-      "required": ["name", "type"]
+
+      "required": ["name", "type"],
+
+      "dependentSchemas": {
+        "importmapName": {
+          "properties": {
+            "importmap": { "const": true },
+            "type": {"const": "script"}
+          },
+          "required": [
+            "importmap"
+          ]
+        },
+        "importmapScope": {
+          "properties": {
+            "importmap": { "const": true },
+            "type": {"const": "script"}
+          },
+          "required": [
+            "importmap"
+          ]
+        }
+      }
     }
   },
 
